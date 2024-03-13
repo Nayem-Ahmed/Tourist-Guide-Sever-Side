@@ -27,6 +27,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     const usersCollection = client.db('TouristGuide').collection('users')
+    const addpackageCollection = client.db('TouristGuide').collection('addpackage')
 
 
     // Save or modify user email, status in DB
@@ -60,6 +61,12 @@ async function run() {
         options
       )
       res.send(result)
+    })
+    // add package add admin
+    app.post('/addpackage', async (req, res) => {
+      const addpackage = req.body;
+      const result = await addpackageCollection.insertOne(addpackage);
+      res.send(result);
     })
 
     await client.connect();
