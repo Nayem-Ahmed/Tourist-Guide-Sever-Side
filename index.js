@@ -11,7 +11,7 @@ app.use(cors({
 app.use(express.json());
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.MDB_user}:${process.env.MDB_pass}@cluster0.8wqrrau.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -67,6 +67,17 @@ async function run() {
       const addpackage = req.body;
       const result = await addpackageCollection.insertOne(addpackage);
       res.send(result);
+    })
+    // Get  package
+    app.get('/addpackage', async (req, res) => {
+      const result = await addpackageCollection.find().toArray()
+      res.send(result)
+    })
+    // Get single package
+    app.get('/addpackage/:id', async (req, res) => {
+      const id = req.params.id;
+      const result = await addpackageCollection.findOne({ _id: new ObjectId(id) })
+      res.send(result)
     })
 
     await client.connect();
