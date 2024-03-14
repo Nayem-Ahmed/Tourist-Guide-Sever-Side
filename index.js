@@ -62,6 +62,18 @@ async function run() {
       )
       res.send(result)
     })
+    // Get user role
+    app.get('/users/:email', async (req, res) => {
+      const email = req.params.email
+      const result = await usersCollection.findOne({ email })
+      res.send(result)
+    })
+    // Get all users
+    app.get('/users', async (req, res) => {
+      const result = await usersCollection.find().toArray()
+      res.send(result)
+    })
+
     // add package add admin
     app.post('/addpackage', async (req, res) => {
       const addpackage = req.body;
