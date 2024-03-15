@@ -28,6 +28,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     const usersCollection = client.db('TouristGuide').collection('users')
     const addpackageCollection = client.db('TouristGuide').collection('addpackage')
+    const addWishlistCollection = client.db('TouristGuide').collection('wishlist')
 
 
     // Save or modify user email, status in DB
@@ -72,6 +73,12 @@ async function run() {
     app.get('/users', async (req, res) => {
       const result = await usersCollection.find().toArray()
       res.send(result)
+    })
+    // wishlist
+    app.post('/wishlist', async (req, res) => {
+      const  addwishlist = req.body;
+      const result = await addWishlistCollection.insertOne(addwishlist);
+      res.send(result);
     })
 
     // add package add admin
