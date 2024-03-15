@@ -63,7 +63,7 @@ async function run() {
       )
       res.send(result)
     })
-    // Get user role
+    // Get user role params
     app.get('/users/:email', async (req, res) => {
       const email = req.params.email
       const result = await usersCollection.findOne({ email })
@@ -76,10 +76,22 @@ async function run() {
     })
     // wishlist
     app.post('/wishlist', async (req, res) => {
-      const  addwishlist = req.body;
+      const addwishlist = req.body;
       const result = await addWishlistCollection.insertOne(addwishlist);
       res.send(result);
     })
+    // Get all wishlist
+    app.get('/wishlist', async (req, res) => {
+      const result = await addWishlistCollection.find().toArray()
+      res.send(result)
+    })
+    // Get wishlist params
+    app.get('/wishlist/:email', async (req, res) => {
+      const email = req.params.email;
+      const fiter = { email: email }
+      const result = await addWishlistCollection.find(fiter).toArray()
+      res.send(result)
+  })
 
     // add package add admin
     app.post('/addpackage', async (req, res) => {
