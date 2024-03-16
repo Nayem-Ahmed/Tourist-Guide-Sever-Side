@@ -91,7 +91,7 @@ async function run() {
       const fiter = { email: email }
       const result = await addWishlistCollection.find(fiter).toArray()
       res.send(result)
-  })
+    })
 
     // add package add admin
     app.post('/addpackage', async (req, res) => {
@@ -109,6 +109,16 @@ async function run() {
       const id = req.params.id;
       const result = await addpackageCollection.findOne({ _id: new ObjectId(id) })
       res.send(result)
+    })
+    //--------------------------------------------------
+    app.get('/tourtypebtdata/:idd', async (req, res) => {
+      const id = req.params.idd;
+      const alltype = await addpackageCollection.findOne({ _id: new ObjectId(id) });
+      // Fetch related products based on the relationships defined in your database
+      const relatedType = await addpackageCollection.find({ tourType: alltype.tourType }).toArray();
+
+      res.json({ alltype, relatedType });
+
     })
 
     await client.connect();
