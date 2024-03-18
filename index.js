@@ -120,6 +120,7 @@ async function run() {
       res.json({ alltype, relatedType });
 
     })
+ 
 
     await client.connect();
     // Send a ping to confirm a successful connection
