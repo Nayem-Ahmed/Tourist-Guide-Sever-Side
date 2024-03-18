@@ -29,6 +29,7 @@ async function run() {
     const usersCollection = client.db('TouristGuide').collection('users')
     const addpackageCollection = client.db('TouristGuide').collection('addpackage')
     const addWishlistCollection = client.db('TouristGuide').collection('wishlist')
+    const addBookingCollection = client.db('TouristGuide').collection('booking')
 
 
     // Save or modify user email, status in DB
@@ -111,6 +112,7 @@ async function run() {
       res.send(result)
     })
     //--------------------------------------------------
+    // related data load
     app.get('/tourtypebtdata/:idd', async (req, res) => {
       const id = req.params.idd;
       const alltype = await addpackageCollection.findOne({ _id: new ObjectId(id) });
@@ -120,6 +122,13 @@ async function run() {
       res.json({ alltype, relatedType });
 
     })
+    // BOOKING
+    app.post('/booking', async (req, res) => {
+      const addbook = req.body;
+      const result = await  addBookingCollection.insertOne(addbook);
+      res.send(result);
+    })
+
  
 
     await client.connect();
