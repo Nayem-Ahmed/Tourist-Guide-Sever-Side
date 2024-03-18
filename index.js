@@ -75,7 +75,7 @@ async function run() {
       const result = await usersCollection.find().toArray()
       res.send(result)
     })
-    // wishlist
+    // wishlist post
     app.post('/wishlist', async (req, res) => {
       const addwishlist = req.body;
       const result = await addWishlistCollection.insertOne(addwishlist);
@@ -90,7 +90,7 @@ async function run() {
     app.get('/wishlist/:email', async (req, res) => {
       const email = req.params.email;
       const fiter = { email: email }
-      const result = await addWishlistCollection.find(fiter).toArray()
+      const result = await addWishlistCollection.find(fiter).toArray();
       res.send(result)
     })
 
@@ -122,14 +122,22 @@ async function run() {
       res.json({ alltype, relatedType });
 
     })
-    // BOOKING
+    // BOOKING post
     app.post('/booking', async (req, res) => {
       const addbook = req.body;
-      const result = await  addBookingCollection.insertOne(addbook);
+      const result = await addBookingCollection.insertOne(addbook);
       res.send(result);
     })
 
- 
+    // Get BOOKING params
+    app.get('/booking/:email', async (req, res) => {
+      const email = req.params.email;
+      const fiterrr = { email: email }
+      const result = await addBookingCollection.find(fiterrr).toArray();
+      res.send(result)
+    })
+
+
 
     await client.connect();
     // Send a ping to confirm a successful connection
