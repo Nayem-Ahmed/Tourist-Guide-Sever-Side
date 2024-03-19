@@ -93,6 +93,12 @@ async function run() {
       const result = await addWishlistCollection.find(fiter).toArray();
       res.send(result)
     })
+    // wishlist delete
+    app.delete('/wishlist/:id', async (req, res) => {
+      const id = req.params.id
+      const finddeletewish = await addWishlistCollection.deleteOne({ _id: new ObjectId(id) })
+      res.send(finddeletewish)
+    })
 
     // add package add admin
     app.post('/addpackage', async (req, res) => {
@@ -128,6 +134,11 @@ async function run() {
       const result = await addBookingCollection.insertOne(addbook);
       res.send(result);
     })
+    // Get all booking
+    // app.get('/booking', async (req, res) => {
+    //   const result = await addBookingCollection.find().toArray()
+    //   res.send(result)
+    // })
 
     // Get BOOKING params
     app.get('/booking/:email', async (req, res) => {
@@ -135,6 +146,12 @@ async function run() {
       const fiterrr = { email: email }
       const result = await addBookingCollection.find(fiterrr).toArray();
       res.send(result)
+    })
+    // single BOOKING delete
+    app.delete('/booking/:id', async (req, res) => {
+      const id = req.params.id
+      const finddelete = await addBookingCollection.deleteOne({ _id: new ObjectId(id) })
+      res.send(finddelete)
     })
 
 
