@@ -86,6 +86,12 @@ async function run() {
       const result = await addWishlistCollection.find().toArray()
       res.send(result)
     })
+    // Get single wishlist
+    app.get('/wishlist/id/:id', async (req, res) => {
+      const id = req.params.id
+      const result = await addWishlistCollection.findOne({ _id: new ObjectId(id) })
+      res.send(result)
+    })
     // Get wishlist params
     app.get('/wishlist/:email', async (req, res) => {
       const email = req.params.email;
