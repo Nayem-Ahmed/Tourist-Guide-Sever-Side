@@ -141,10 +141,36 @@ async function run() {
       res.send(result);
     })
     // Get all booking
-    // app.get('/booking', async (req, res) => {
-    //   const result = await addBookingCollection.find().toArray()
-    //   res.send(result)
-    // })
+    app.get('/booking', async (req, res) => {
+      const result = await addBookingCollection.find().toArray()
+      res.send(result)
+    })
+    //change role REJECTED
+    app.patch('/booking/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const updateDoc = {
+        $set: {
+          status:  "rejected",
+        },
+      }
+      const result = await addBookingCollection.updateOne(filter, updateDoc)
+      res.send(result)
+
+    })
+    //change role ACCEPTED
+    app.patch('/booking/id/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter2 = { _id: new ObjectId(id) }
+      const updateDocData = {
+        $set: {
+          status:  "accepted",
+        },
+      }
+      const result = await addBookingCollection.updateOne(filter2, updateDocData)
+      res.send(result)
+
+    })
 
     // Get BOOKING params
     app.get('/booking/:email', async (req, res) => {
