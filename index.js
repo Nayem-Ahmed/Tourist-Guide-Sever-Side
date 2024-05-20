@@ -5,7 +5,7 @@ const app = express()
 const port = process.env.PORT || 5000
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: ['http://localhost:5173', 'https://tourist-guide-e5f20.web.app', 'https://tourist-guide-e5f20.firebaseapp.com'],
   credentials: true,
 }));
 app.use(express.json());
@@ -69,6 +69,34 @@ async function run() {
       const email = req.params.email
       const result = await usersCollection.findOne({ email })
       res.send(result)
+    })
+    // update user from dashboard
+    app.patch('/updateProfile/:email', async (req, res) => {
+      try {
+        const email = req.params.email;
+        const updatedProfile = req.body; 
+
+        // Find the user in the database based on the email
+        const query = { email: email };
+        const user = await usersCollection.findOne(query);
+
+        if (!user) {
+          return res.status(404).send({ message: 'User not found' });
+        }
+
+        // Update the user's profile with the provided data
+        const result = await usersCollection.updateOne(query, { $set: updatedProfile });
+
+        if (result.modifiedCount === 0) {
+          return res.status(400).send({ message: 'Failed to update user profile' });
+        }
+
+        // Send the updated user profile in the response
+        res.send({ message: 'User profile updated successfully', user: updatedProfile });
+      } catch (error) {
+        console.error('Error updating user profile:', error);
+        res.status(500).send({ message: 'Internal server error' });
+      }
     })
     // Get all users
     app.get('/users', async (req, res) => {
@@ -151,7 +179,7 @@ async function run() {
       const filter = { _id: new ObjectId(id) }
       const updateDoc = {
         $set: {
-          status:  "rejected",
+          status: "rejected",
         },
       }
       const result = await addBookingCollection.updateOne(filter, updateDoc)
@@ -164,7 +192,7 @@ async function run() {
       const filter2 = { _id: new ObjectId(id) }
       const updateDocData = {
         $set: {
-          status:  "accepted",
+          status: "accepted",
         },
       }
       const result = await addBookingCollection.updateOne(filter2, updateDocData)
@@ -188,7 +216,7 @@ async function run() {
 
 
 
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
